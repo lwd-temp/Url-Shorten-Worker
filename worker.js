@@ -251,7 +251,7 @@ async function handleRequest(request) {
     );
     index = await index.text();
     // index = index.replace(/__PASSWORD__/gm, password_value) // 自动填写密码，不建议使用
-    index = index.replace(/__PASSWORD__/gm, "");
+    index = index.replace(/__PASSWORD__/gm, ""); // 将模板中的占位密码删除
     return new Response(index, {
       headers: {
         "content-type": "text/html;charset=UTF-8",
