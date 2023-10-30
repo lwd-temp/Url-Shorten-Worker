@@ -18,13 +18,19 @@ const config = {
 // 需要在环境变量配置 PASSWORD 才能正常运行
 
 const html404 = `<!DOCTYPE html>
-  <html>
+<html>
   <body>
     <h1>404 Not Found.</h1>
     <p>The url you visit is not found.</p>
-    <p> <a href="https://github.com/lwd-temp/Url-Shorten-Worker/tree/crazypeace-mod" target="_self">Fork me on GitHub</a> </p>
+    <p>
+      <a
+        href="https://github.com/lwd-temp/Url-Shorten-Worker/tree/crazypeace-mod"
+        target="_self"
+        >Fork me on GitHub</a
+      >
+    </p>
   </body>
-  </html>`;
+</html>`;
 
 const robotstxt = `User-agent: *
 Disallow: /`;
