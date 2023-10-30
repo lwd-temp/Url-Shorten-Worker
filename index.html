@@ -457,7 +457,7 @@
             return response.json();
           })
           .then(function (myJson) {
-            if (res.status == "200") {
+            if (myJson.status == "200") {
               res = myJson["key"];
               // {short1: URL1, short2: URL2}
               // 每个key-value对应短域名和长域名
@@ -467,7 +467,7 @@
               }
               loadUrlList();
             } else {
-              document.getElementById("result").innerHTML = res.error;
+              document.getElementById("result").innerHTML = myJson.error;
             }
 
             $("#resultModal").modal("show");
