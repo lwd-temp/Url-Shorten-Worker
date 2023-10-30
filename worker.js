@@ -174,17 +174,19 @@ async function handleRequest(request) {
           );
         }
         // Check for Not allowed chars in path
-        if (config.protected_path_chars.includes(req_keyPhrase)) {
-          return new Response(
-            JSON.stringify({
-              status: 500,
-              key: req_keyPhrase,
-              error: "Error: Not allowed chars in path",
-            }),
-            {
-              headers: response_header,
-            }
-          );
+        for (let i = 0; i < config.chars_not_allowed_in_path.length; i++) {
+          if (req_keyPhrase.includes(config.chars_not_allowed_in_path[i])) {
+            return new Response(
+              JSON.stringify({
+                status: 500,
+                key: req_keyPhrase,
+                error: "Error: Not allowed chars in path.",
+              }),
+              {
+                headers: response_header,
+              }
+            );
+          }
         }
         // Check for existed key
         let is_exist = await LINKS.get(req_keyPhrase);
