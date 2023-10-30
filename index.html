@@ -1,91 +1,458 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-  <meta http-equiv="content-type" content="txt/html; charset=utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-  <title>Shorter URL</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xyTom/Url-Shorten-Worker@crazypeace-gh-pages/styles.css">
-</head>
-<body>
-  <div class="card">
-    <h5 class="card-header">Shorten your URLs!</h5>
-    <div class="card-body">
-      <h5 class="card-title"> </h5>
+  <head>
+    <meta http-equiv="content-type" content="txt/html; charset=utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <title>Shorter URL</title>
+    <!--
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/lwd-temp/Url-Shorten-Worker@crazypeace-mod/styles.css"
+    />
+    -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        cursor: default;
+      }
+      body {
+        display: -webkit-box;
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        vertical-align: center;
+        flex-wrap: wrap;
+        align-content: center;
 
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1">Long URL</span>
-        </div>
-        <input type="text" class="form-control" id="longURL" aria-describedby="basic-addon1" placeholder="Example: https://example.com/" oninput="loadUrlList()">
-      </div>
+        color: #2a2b2c;
+        background-color: #ebedee;
+      }
+      .card {
+        background-color: transparent;
+        width: 768px;
+      }
+      .form-control {
+        cursor: auto;
+      }
+      .btn {
+        margin: 0 0.375rem 0 0;
+      }
+      .list-group-item {
+        font-family: "Source Code Pro", Menlo, Monaco, Consolas, "Courier New",
+          monospace;
+      }
+      @media (max-width: 769px) {
+        .card {
+          width: 80%;
+        }
+      }
+      @media (max-width: 420px) {
+        .card {
+          width: 95%;
+        }
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          color: #d9d9d9;
+          background: #1b1b1b;
+        }
+        .card {
+          background-color: #252d38;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h5 class="card-header">Shorten your URLs!</h5>
+      <div class="card-body">
+        <h5 class="card-title"></h5>
 
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon2">Custom Short URL</span>
-        </div>
-        <input type="text" class="form-control" id="keyPhrase" aria-describedby="basic-addon2" placeholder="As you wish">
-      </div>     
-
-      <div class="input-group mb-3">
-        <button class="btn btn-primary" type="button" onclick='shorturl()' id="addBtn">Shorten it</button>
-      </div>
-
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon3">password</span>
-        </div>
-        <input class="form-control" type="text" value="__PASSWORD__" readonly="true" id="passwordText" aria-describedby="basic-addon3">
-      </div>
-
-      <div class="input-group mb-3">
-        <button class="btn btn-info" type="button" onclick='loadUrlList()' id="loadListBtn">load localStorage</button>
-        <button class="btn btn-danger" type="button" onclick='clearLocalStorage()' id="clearlocalStgBtn">clear localStorage</button>
-      </div>
-
-      <div class="card-text">
-        <div classs="list-group" id="urlList"> 
-          <div class="list-group-item">
-            <button type="button" class="btn btn-danger" onclick='deleteShortUrl("4rEbzm")'>X</button>
-            <span>some text</span>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Long URL</span>
           </div>
-          <div class="list-group-item">
-            <button type="button" class="btn btn-danger" onclick='deleteShortUrl("8NKY34")'>X</button>
-            <span>some text some text some text some text some text some text some text some text some text some text some text </span>
-          </div>
+          <input
+            type="text"
+            class="form-control"
+            id="longURL"
+            aria-describedby="basic-addon1"
+            placeholder="Example: https://example.com/"
+            oninput="loadUrlList()"
+          />
         </div>
-      </div>      
-      
-      <div class="card-footer">
-        <span> <a href="https://github.com/xyTom/Url-Shorten-Worker/tree/crazypeace" target="_self">Fork me on GitHub</a> </span>
-      </div>
-    </div>
-  </div>
 
-  <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="resultModalLabel">Result</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon2"
+              >Custom Short URL</span
+            >
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            id="keyPhrase"
+            aria-describedby="basic-addon2"
+            placeholder="As you wish"
+          />
+        </div>
+
+        <div class="input-group mb-3">
+          <button
+            class="btn btn-primary"
+            type="button"
+            onclick="shorturl()"
+            id="addBtn"
+          >
+            Shorten it
           </button>
         </div>
-        <div class="modal-body" id="result">No result</div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick='copyurl("result")' data-toggle="popover" data-placement="bottom" data-content="Copied!">Copy</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>    
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3">password</span>
+          </div>
+          <input
+            class="form-control"
+            type="text"
+            value="__PASSWORD__"
+            readonly="true"
+            id="passwordText"
+            aria-describedby="basic-addon3"
+          />
+        </div>
+
+        <div class="input-group mb-3">
+          <button
+            class="btn btn-info"
+            type="button"
+            onclick="loadUrlList()"
+            id="loadListBtn"
+          >
+            load localStorage
+          </button>
+          <button
+            class="btn btn-danger"
+            type="button"
+            onclick="clearLocalStorage()"
+            id="clearlocalStgBtn"
+          >
+            clear localStorage
+          </button>
+        </div>
+
+        <div class="card-text">
+          <div classs="list-group" id="urlList">
+            <div class="list-group-item">
+              <button
+                type="button"
+                class="btn btn-danger"
+                onclick='deleteShortUrl("4rEbzm")'
+              >
+                X
+              </button>
+              <span>some text</span>
+            </div>
+            <div class="list-group-item">
+              <button
+                type="button"
+                class="btn btn-danger"
+                onclick='deleteShortUrl("8NKY34")'
+              >
+                X
+              </button>
+              <span
+                >some text some text some text some text some text some text
+                some text some text some text some text some text
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <span>
+            <a
+              href="https://github.com/lwd-temp/Url-Shorten-Worker/tree/crazypeace-mod"
+              target="_self"
+              >Fork me on GitHub</a
+            >
+          </span>
         </div>
       </div>
     </div>
-  </div>         
-  
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 
-  <script src="https://cdn.jsdelivr.net/gh/xyTom/Url-Shorten-Worker@crazypeace-gh-pages/main.js" crossorigin="anonymous"></script>
-  <!--
-    <script src="https://cdn.jsdelivr.net/gh/crazypeace/Url-Shorten-Worker@gh-pages/main.js" crossorigin="anonymous"></script>
-  -->
-</body>
+    <div
+      class="modal fade"
+      id="resultModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="resultModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="resultModalLabel">Result</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="result">No result</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick='copyurl("result")'
+              data-toggle="popover"
+              data-placement="bottom"
+              data-content="Copied!"
+            >
+              Copy
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+      crossorigin="anonymous"
+    ></script>
+
+    <!--
+    <script
+      src="https://cdn.jsdelivr.net/gh/xyTom/Url-Shorten-Worker@crazypeace-gh-pages/main.js"
+      crossorigin="anonymous"
+    ></script>
+    -->
+    <script>
+      let res;
+      function shorturl() {
+        if (document.querySelector("#longURL").value == "") {
+          alert("Url cannot be empty!");
+          return;
+        }
+
+        document.getElementById("addBtn").disabled = true;
+        document.getElementById("addBtn").innerHTML =
+          '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Please wait...';
+        fetch(window.location.pathname, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            cmd: "add",
+            url: document.querySelector("#longURL").value,
+            keyPhrase: document.querySelector("#keyPhrase").value,
+            password: document.querySelector("#passwordText").value,
+          }),
+        })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (myJson) {
+            res = myJson;
+            document.getElementById("addBtn").disabled = false;
+            document.getElementById("addBtn").innerHTML = "Shorten it";
+
+            // 成功生成短链
+            if (res.status == "200") {
+              let keyPhrase = res.key;
+              let valueLongURL = document.querySelector("#longURL").value;
+              // save to localStorage
+              localStorage.setItem(keyPhrase, valueLongURL);
+              // add to urlList on the page
+              addUrlToList(keyPhrase, valueLongURL);
+
+              document.getElementById("result").innerHTML =
+                window.location.protocol +
+                "//" +
+                window.location.host +
+                "/" +
+                res.key;
+            } else {
+              document.getElementById("result").innerHTML = res.error;
+            }
+
+            $("#resultModal").modal("show");
+          })
+          .catch(function (err) {
+            alert("Unknow error. Please retry!");
+            console.log(err);
+            document.getElementById("addBtn").disabled = false;
+            document.getElementById("addBtn").innerHTML = "Shorten it";
+          });
+      }
+      function copyurl(id, attr) {
+        let target = null;
+
+        if (attr) {
+          target = document.createElement("div");
+          target.id = "tempTarget";
+          target.style.opacity = "0";
+          if (id) {
+            let curNode = document.querySelector("#" + id);
+            target.innerText = curNode[attr];
+          } else {
+            target.innerText = attr;
+          }
+          document.body.appendChild(target);
+        } else {
+          target = document.querySelector("#" + id);
+        }
+
+        try {
+          let range = document.createRange();
+          range.selectNode(target);
+          window.getSelection().removeAllRanges();
+          window.getSelection().addRange(range);
+          document.execCommand("copy");
+          window.getSelection().removeAllRanges();
+          console.log("Copy success");
+        } catch (e) {
+          console.log("Copy error");
+        }
+
+        if (attr) {
+          // remove temp target
+          target.parentElement.removeChild(target);
+        }
+      }
+      function loadUrlList() {
+        // 清空列表
+        let urlList = document.querySelector("#urlList");
+        while (urlList.firstChild) {
+          urlList.removeChild(urlList.firstChild);
+        }
+
+        // 文本框中的长链接
+        let longUrl = document.querySelector("#longURL").value;
+        console.log(longUrl);
+
+        // 遍历localStorage
+        let len = localStorage.length;
+        console.log(+len);
+        for (; len > 0; len--) {
+          let keyShortURL = localStorage.key(len - 1);
+          let valueLongURL = localStorage.getItem(keyShortURL);
+
+          // 如果长链接为空，加载所有的localStorage
+          // 如果长链接不为空，加载匹配的localStorage
+          if (longUrl == "" || longUrl == valueLongURL) {
+            addUrlToList(keyShortURL, valueLongURL);
+          }
+        }
+      }
+
+      function addUrlToList(shortUrl, longUrl) {
+        let urlList = document.querySelector("#urlList");
+
+        let child = document.createElement("div");
+        child.classList.add("list-group-item");
+
+        let btn = document.createElement("button");
+        btn.setAttribute("type", "button");
+        btn.classList.add("btn", "btn-danger");
+        btn.setAttribute("onclick", 'deleteShortUrl("' + shortUrl + '")');
+        btn.setAttribute("id", "delBtn-" + shortUrl);
+        btn.innerText = "X";
+        child.appendChild(btn);
+
+        let text = document.createElement("span");
+        text.innerText =
+          window.location.protocol +
+          "//" +
+          window.location.host +
+          "/" +
+          shortUrl +
+          " " +
+          longUrl;
+        child.appendChild(text);
+
+        urlList.append(child);
+      }
+
+      function clearLocalStorage() {
+        localStorage.clear();
+      }
+
+      function deleteShortUrl(delKeyPhrase) {
+        // 按钮
+        document.getElementById("delBtn-" + delKeyPhrase).disabled = true;
+        document.getElementById("delBtn-" + delKeyPhrase).innerHTML =
+          '<span class="spinner-border spinner-border-sm" role="status"></span>';
+
+        // 从KV中删除
+        fetch(window.location.pathname, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            cmd: "del",
+            keyPhrase: delKeyPhrase,
+            password: document.querySelector("#passwordText").value,
+          }),
+        })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (myJson) {
+            res = myJson;
+
+            // 成功删除
+            if (res.status == "200") {
+              // 从localStorage中删除
+              localStorage.removeItem(delKeyPhrase);
+
+              // 加载localStorage
+              loadUrlList();
+
+              document.getElementById("result").innerHTML = "Delete Successful";
+            } else {
+              document.getElementById("result").innerHTML = res.error;
+            }
+
+            $("#resultModal").modal("show");
+          })
+          .catch(function (err) {
+            alert("Unknow error. Please retry!");
+            console.log(err);
+          });
+      }
+
+      $(function () {
+        $('[data-toggle="popover"]').popover();
+      });
+
+      loadUrlList();
+    </script>
+  </body>
 </html>
