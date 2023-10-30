@@ -13,7 +13,7 @@ const config = {
     "/robots.txt",
     "/favicon.ico",
   ], // Not allowed path
-  chars_not_allowed_in_path: ["/", "?", '"', "<", ">", "%", "#"], // Not allowed chars in path
+  chars_not_allowed_in_path: ["/", "?", '"', "<", ">", "%", "#", "￥"], // Not allowed chars in path
 };
 
 // 需要在环境变量配置 PASSWORD 才能正常运行
