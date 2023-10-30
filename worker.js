@@ -13,6 +13,7 @@ const config = {
     "/robots.txt",
     "/favicon.ico",
   ], // Not allowed path
+  chars_not_allowed_in_path: ["/", "?", '"', "<", ">", "%", "#"], // Not allowed chars in path
 };
 
 // 需要在环境变量配置 PASSWORD 才能正常运行
@@ -166,6 +167,19 @@ async function handleRequest(request) {
               status: 500,
               key: req_keyPhrase,
               error: "Error: Protected path.",
+            }),
+            {
+              headers: response_header,
+            }
+          );
+        }
+        // Check for Not allowed chars in path
+        if (config.protected_path_chars.includes(req_keyPhrase)) {
+          return new Response(
+            JSON.stringify({
+              status: 500,
+              key: req_keyPhrase,
+              error: "Error: Not allowed chars in path",
             }),
             {
               headers: response_header,
