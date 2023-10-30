@@ -87,6 +87,18 @@ async function is_url_exist(url_sha512) {
     return is_exist;
   }
 }
+async function get_all_links() {
+  // https://developers.cloudflare.com/kv/api/list-keys/
+  let dict = {};
+  let keys_list = await LINKS.list(); // 1000 is the maximum number of keys returned. 不建议将此项目用于同时超过1000个key的生产环境
+  // key是keys_list["keys"]中每个字典的name
+  for (let i = 0; i < keys_list["keys"].length; i++) {
+    let key = keys_list["keys"][i];
+    let value = await LINKS.get(key);
+    dict[key] = value;
+  }
+  return dict;
+}
 async function handleRequest(request) {
   console.log(request);
 
@@ -226,14 +238,6 @@ async function handleRequest(request) {
   const params = requestURL.search;
 
   console.log(path);
-  if (!path) {
-    new Response(html404, {
-      headers: {
-        "content-type": "text/html;charset=UTF-8",
-      },
-      status: 404,
-    });
-  }
 
   // 若为robots.txt
   if (path == "robots.txt") {
