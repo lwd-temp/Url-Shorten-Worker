@@ -6,6 +6,8 @@ const config = {
   custom_link: true, //Allow users to customize the short url.
 };
 
+// 需要在环境变量配置 PASSWORD 才能正常运行
+
 const html404 = `<!DOCTYPE html>
   <html>
   <body>
