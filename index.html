@@ -126,9 +126,8 @@
           </div>
           <input
             class="form-control"
-            type="text"
-            value="__PASSWORD__"
-            readonly="true"
+            type="password"
+            value=""
             id="passwordText"
             aria-describedby="basic-addon3"
           />
@@ -259,7 +258,7 @@
       let res;
       function shorturl() {
         if (document.querySelector("#longURL").value == "") {
-          alert("Url cannot be empty!");
+          alert("URL cannot be empty!");
           return;
         }
 

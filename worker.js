@@ -244,15 +244,15 @@ async function handleRequest(request) {
     });
   }
 
-  // 如果path符合password 显示应用界面
-  if (path == password_value) {
+  // 如果path为空，则显示 index.html
+  // PASSWORD 永远不应该出现在 GET 请求中
+  if (path == "") {
     let index = await fetch(
       "https://raw.githubusercontent.com/lwd-temp/Url-Shorten-Worker/crazypeace-mod" +
         config.theme +
         "/index.html"
     );
     index = await index.text();
-    index = index.replace(/__PASSWORD__/gm, password_value);
     return new Response(index, {
       headers: {
         "content-type": "text/html;charset=UTF-8",
