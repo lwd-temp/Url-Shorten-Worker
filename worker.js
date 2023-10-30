@@ -250,6 +250,8 @@ async function handleRequest(request) {
       "https://raw.githubusercontent.com/lwd-temp/Url-Shorten-Worker/crazypeace-mod/index.html"
     );
     index = await index.text();
+    // index = index.replace(/__PASSWORD__/gm, password_value) // 自动填写密码，不建议使用
+    index = index.replace(/__PASSWORD__/gm, "");
     return new Response(index, {
       headers: {
         "content-type": "text/html;charset=UTF-8",
