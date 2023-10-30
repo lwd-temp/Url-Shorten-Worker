@@ -242,9 +242,16 @@ async function handleRequest(request) {
         );
       }
       let dict = await get_all_links();
-      return new Response(JSON.stringify(dict), {
-        headers: response_header,
-      });
+      return new Response(
+        JSON.stringify({
+          status: 200,
+          key: dict,
+          error: "",
+        }),
+        {
+          headers: response_header,
+        }
+      );
     }
   } else if (request.method === "OPTIONS") {
     return new Response(``, {

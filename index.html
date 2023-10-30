@@ -456,14 +456,24 @@
             return response.json();
           })
           .then(function (myJson) {
-            res = myJson;
-            // {short1: URL1, short2: URL2}
-            // 每个key-value对应短域名和长域名
-            localStorage.clear();
-            for (let key in res) {
-              localStorage.setItem(key, res[key]);
+            if (res.status == "200") {
+              res = myJson["key"];
+              // {short1: URL1, short2: URL2}
+              // 每个key-value对应短域名和长域名
+              localStorage.clear();
+              for (let key in res) {
+                localStorage.setItem(key, res[key]);
+              }
+              loadUrlList();
+            } else {
+              document.getElementById("result").innerHTML = res.error;
             }
-            loadUrlList();
+
+            $("#resultModal").modal("show");
+          })
+          .catch(function (err) {
+            alert("Unknow error. Please retry!");
+            console.log(err);
           });
       }
 
