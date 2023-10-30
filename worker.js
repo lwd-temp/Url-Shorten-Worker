@@ -93,7 +93,7 @@ async function get_all_links() {
   let keys_list = await LINKS.list(); // 1000 is the maximum number of keys returned. 不建议将此项目用于同时超过1000个key的生产环境
   // key是keys_list["keys"]中每个字典的name
   for (let i = 0; i < keys_list["keys"].length; i++) {
-    let key = keys_list["keys"][i];
+    let key = keys_list["keys"][i]["name"];
     let value = await LINKS.get(key);
     dict[key] = value;
   }
@@ -226,26 +226,26 @@ async function handleRequest(request) {
           headers: response_header,
         }
       );
-    }
-  } else if (req_cmd == "list") {
-    let req_password = req["password"];
+    } else if (req_cmd == "list") {
+      let req_password = req["password"];
 
-    if (req_password != password_value) {
-      return new Response(
-        JSON.stringify({
-          status: 500,
-          key: "",
-          error: "Error: Invalid password.",
-        }),
-        {
-          headers: response_header,
-        }
-      );
+      if (req_password != password_value) {
+        return new Response(
+          JSON.stringify({
+            status: 500,
+            key: "",
+            error: "Error: Invalid password.",
+          }),
+          {
+            headers: response_header,
+          }
+        );
+      }
+      let dict = await get_all_links();
+      return new Response(JSON.stringify(dict), {
+        headers: response_header,
+      });
     }
-    let dict = await get_all_links();
-    return new Response(JSON.stringify(dict), {
-      headers: response_header,
-    });
   } else if (request.method === "OPTIONS") {
     return new Response(``, {
       headers: response_header,
