@@ -16,6 +16,9 @@ const html404 = `<!DOCTYPE html>
   </body>
   </html>`;
 
+const robotstxt = `User-agent: *
+Disallow: /`;
+
 let response_header = {
   "content-type": "text/html;charset=UTF-8",
 };
@@ -197,6 +200,16 @@ async function handleRequest(request) {
         "content-type": "text/html;charset=UTF-8",
       },
       status: 404,
+    });
+  }
+
+  // 若为robots.txt
+  if (path == "robots.txt") {
+    const html = robotstxt;
+    return new Response(await html, {
+      headers: {
+        "content-type": "text/plain;charset=UTF-8",
+      },
     });
   }
 
