@@ -105,7 +105,11 @@ async function handleRequest(request) {
       console.log(req_password);
       if (!(await checkURL(req_url))) {
         return new Response(
-          `{"status":500,"key": "", "error":": Error: Url illegal."}`,
+          JSON.stringify({
+            status: 500,
+            key: req_url,
+            error: "Error: URL illegal.",
+          }),
           {
             headers: response_header,
           }
@@ -114,7 +118,11 @@ async function handleRequest(request) {
 
       if (req_password != password_value) {
         return new Response(
-          `{"status":500,"key": "", "error":": Error: Invalid password."}`,
+          JSON.stringify({
+            status: 500,
+            key: req_url,
+            error: "Error: Invalid password.",
+          }),
           {
             headers: response_header,
           }
@@ -126,7 +134,11 @@ async function handleRequest(request) {
         let is_exist = await LINKS.get(req_keyPhrase);
         if (is_exist != null) {
           return new Response(
-            `{"status":500,"key": "", "error":": Error: Custom shortURL existed."}`,
+            JSON.stringify({
+              status: 500,
+              key: req_keyPhrase,
+              error: "Error: Custom shortURL existed.",
+            }),
             {
               headers: response_header,
             }
@@ -152,14 +164,22 @@ async function handleRequest(request) {
       console.log(stat);
       if (typeof stat == "undefined") {
         return new Response(
-          `{"status":200, "key":"` + random_key + `", "error": ""}`,
+          JSON.stringify({
+            status: 200,
+            key: random_key,
+            error: "",
+          }),
           {
             headers: response_header,
           }
         );
       } else {
         return new Response(
-          `{"status":500, "key": "", "error":": Error:Reach the KV write limitation."}`,
+          JSON.stringify({
+            status: 500,
+            key: "",
+            error: "Error: Reach the KV write limitation.",
+          }),
           {
             headers: response_header,
           }
@@ -171,7 +191,11 @@ async function handleRequest(request) {
 
       if (req_password != password_value) {
         return new Response(
-          `{"status":500,"key": "", "error":": Error: Invalid password."}`,
+          JSON.stringify({
+            status: 500,
+            key: "",
+            error: "Error: Invalid password.",
+          }),
           {
             headers: response_header,
           }
@@ -179,9 +203,16 @@ async function handleRequest(request) {
       }
 
       await LINKS.delete(req_keyPhrase);
-      return new Response(`{"status":200}`, {
-        headers: response_header,
-      });
+      return new Response(
+        JSON.stringify({
+          status: 200,
+          key: req_keyPhrase,
+          error: "",
+        }),
+        {
+          headers: response_header,
+        }
+      );
     }
   } else if (request.method === "OPTIONS") {
     return new Response(``, {
