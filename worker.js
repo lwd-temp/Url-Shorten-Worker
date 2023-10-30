@@ -4,6 +4,7 @@ const config = {
   cors: "off", //Allow Cross-origin resource sharing for API requests.
   unique_link: false, //If it is true, the same long url will be shorten into the same short url
   custom_link: true, //Allow users to customize the short url.
+  protected_path: ["favicon.ico", "robots.txt", "index.html", "/"], // Not allowed path
 };
 
 // 需要在环境变量配置 PASSWORD 才能正常运行
@@ -144,6 +145,20 @@ async function handleRequest(request) {
 
       let stat, random_key;
       if (config.custom_link && req_keyPhrase != "") {
+        // Check for protected path
+        if (config.protected_path.includes(req_keyPhrase)) {
+          return new Response(
+            JSON.stringify({
+              status: 500,
+              key: req_keyPhrase,
+              error: "Error: Protected path.",
+            }),
+            {
+              headers: response_header,
+            }
+          );
+        }
+        // Check for existed key
         let is_exist = await LINKS.get(req_keyPhrase);
         if (is_exist != null) {
           return new Response(
