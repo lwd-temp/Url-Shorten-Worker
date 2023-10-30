@@ -4,7 +4,15 @@ const config = {
   cors: "off", //Allow Cross-origin resource sharing for API requests.
   unique_link: false, //If it is true, the same long url will be shorten into the same short url
   custom_link: true, //Allow users to customize the short url.
-  protected_path: ["favicon.ico", "robots.txt", "index.html", "/"], // Not allowed path
+  protected_path: [
+    "favicon.ico",
+    "robots.txt",
+    "index.html",
+    "/",
+    "/index.html",
+    "/robots.txt",
+    "/favicon.ico",
+  ], // Not allowed path
 };
 
 // 需要在环境变量配置 PASSWORD 才能正常运行
