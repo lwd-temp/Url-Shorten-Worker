@@ -89,8 +89,8 @@ async function is_url_exist(url_sha512) {
 async function handleRequest(request) {
   console.log(request);
 
-  // 查KV中的password对应的值
-  const password_value = await LINKS.get("password");
+  // 环境变量配置 PASSWORD
+  const password_value = PASSWORD;
 
   if (request.method === "POST") {
     let req = await request.json();
