@@ -387,9 +387,7 @@
           //"//" +
           //window.location.host +
           //"/" +
-          shortUrl +
-          " " +
-          longUrl;
+          shortUrl + " " + longUrl;
         child.appendChild(text);
 
         urlList.append(child);
@@ -468,9 +466,8 @@
               loadUrlList();
             } else {
               document.getElementById("result").innerHTML = myJson.error;
+              $("#resultModal").modal("show");
             }
-
-            $("#resultModal").modal("show");
           })
           .catch(function (err) {
             alert("Unknow error. Please retry!");
