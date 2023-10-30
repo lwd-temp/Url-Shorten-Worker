@@ -137,7 +137,7 @@
           <button
             class="btn btn-info"
             type="button"
-            onclick="listAllURL()"
+            onclick="listAllURL(temp = true)"
             id="listAllURLBtn"
           >
             List all URLs
@@ -441,7 +441,7 @@
           });
       }
 
-      function listAllURL() {
+      function listAllURL(temp = false) {
         // 请求后端，cmd 为 list
         fetch(window.location.pathname, {
           method: "POST",
@@ -459,11 +459,27 @@
               res = myJson["key"];
               // {short1: URL1, short2: URL2}
               // 每个key-value对应短域名和长域名
-              localStorage.clear();
-              for (let key in res) {
-                localStorage.setItem(key, res[key]);
+
+              if (temp) {
+                // 临时展示
+
+                // 清空列表
+                let urlList = document.querySelector("#urlList");
+                while (urlList.firstChild) {
+                  urlList.removeChild(urlList.firstChild);
+                }
+
+                for (let key in res) {
+                  addUrlToList(key, res[key]);
+                }
+              } else {
+                // 保存到localStorage
+                localStorage.clear();
+                for (let key in res) {
+                  localStorage.setItem(key, res[key]);
+                }
+                loadUrlList();
               }
-              loadUrlList();
             } else {
               document.getElementById("result").innerHTML = myJson.error;
               $("#resultModal").modal("show");
