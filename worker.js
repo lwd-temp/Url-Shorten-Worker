@@ -1,6 +1,7 @@
 const config = {
-  no_ref: "off", //Control the HTTP referrer header, if you want to create an anonymous link that will hide the HTTP Referer header, please set to "on" .
-  theme: "", //Homepage theme, use the empty value for default theme. To use urlcool theme, please fill with "theme/urlcool" .
+  old_no_ref: "off", //Control the HTTP referrer header, if you want to create an anonymous link that will hide the HTTP Referer header, please set to "on" . 这会利用一个HTML页面实现 no-referrer 跳转。
+  new_no_ref: "off", //这会构建一个有"Referrer-Policy": "no-referrer"头的302跳转。
+  theme: "", //Homepage theme, use the empty value for default theme. To use urlcool theme, please fill with "theme/urlcool" .干脆别用这个。
   cors: "on", //Allow Cross-origin resource sharing for API requests.
   unique_link: false, //If it is true, the same long url will be shorten into the same short url
   custom_link: true, //Allow users to customize the short url.
@@ -235,6 +236,14 @@ async function handleRequest(request) {
       return new Response(no_ref, {
         headers: {
           "content-type": "text/html;charset=UTF-8",
+        },
+      });
+    } else if (config.new_no_ref == "on") {
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: location,
+          "Referrer-Policy": "no-referrer",
         },
       });
     } else {
