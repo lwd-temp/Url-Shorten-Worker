@@ -227,6 +227,25 @@ async function handleRequest(request) {
         }
       );
     }
+  } else if (req_cmd == "list") {
+    let req_password = req["password"];
+
+    if (req_password != password_value) {
+      return new Response(
+        JSON.stringify({
+          status: 500,
+          key: "",
+          error: "Error: Invalid password.",
+        }),
+        {
+          headers: response_header,
+        }
+      );
+    }
+    let dict = await get_all_links();
+    return new Response(JSON.stringify(dict), {
+      headers: response_header,
+    });
   } else if (request.method === "OPTIONS") {
     return new Response(``, {
       headers: response_header,
